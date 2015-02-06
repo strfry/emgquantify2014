@@ -22,6 +22,8 @@ path = './'
 #filename = "tobias_5kg.hdf5"
 filename = sys.argv[1]
 
+print "Processing " + filename
+
 plot_basename = "plots/" + os.path.basename(filename).replace(".hdf5", "")
 
 # Open HDF5 File
@@ -53,6 +55,7 @@ repIndices = [map(VideoToEMG, rep) for rep in boundaries]
 
 
 NFFT = 256
+LOW_CUTOFF = 5
 
 def plot_fftsum(indices, color=None):
   sum = np.zeros(NFFT)
@@ -69,6 +72,8 @@ def plot_fftsum(indices, color=None):
 
   Y = np.fft.rfft(sum, n=NFFT)
   Y = abs(Y)
+
+  plt.xlim(xmin=LOW_CUTOFF, xmax=NFFT/2)
   
   if color == None:
     plt.plot(Y)
