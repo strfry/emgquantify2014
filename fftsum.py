@@ -6,8 +6,9 @@ import numpy as np
 path = "Data/"
 
 filenames = [
-  "florian_12kg2014.12.12.hdf5",
-  "florian_12kg2014.12.12.hdf5"
+  "florian_12kg_2014.12.15.hdf5",
+  "florian_10kg_stehen_2014.12.19.hdf5",
+  "florian_10kg_tisch_2014.12.19.hdf5"
   ]
 
 files = [HDF5File(path + name) for name in filenames]
@@ -22,6 +23,7 @@ def plot_fftsum(file, indices):
     data = np.append(data, [0] * max(0, NFFT - (r-l)))
     begin = (len(data) - NFFT) / 2
     data = data[begin:begin+NFFT]
+    print data
     data = data * np.hanning(NFFT)
     sum += data
 

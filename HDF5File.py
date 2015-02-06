@@ -3,8 +3,9 @@ import h5py
 class HDF5File:
   def __init__(self, filename):
     self.name = filename
+    print filename
     # Open HDF5 File
-    f = h5py.File(filename)
+    f = h5py.File(filename, 'r')
     # Copy actual samples into a simple array
     self.emgData = f["RawData/Samples"][:].transpose()[0]
 
