@@ -3,11 +3,16 @@
 
 # %matplotlib inline
 
-import numpy as np
-import matplotlib.pyplot as plt
 import h5py
 import sys
 import os
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+from mpltools import style
+style.use('mystyle')
 
 # path = 'C:\\Users\\KOM\\Desktop\\EMG_Praktikumsgruppe\\messungen\\'
 path = './'
@@ -49,7 +54,7 @@ repIndices = [map(VideoToEMG, rep) for rep in boundaries]
 
 NFFT = 256
 
-def plot_fftsum(indices):
+def plot_fftsum(indices, color=None):
   sum = np.zeros(NFFT)
   for l,r in indices:
     data = emgData[l:r]
@@ -64,26 +69,29 @@ def plot_fftsum(indices):
 
   Y = np.fft.rfft(sum, n=NFFT)
   Y = abs(Y)
-  plt.plot(Y)
+  
+  if color == None:
+    plt.plot(Y)
+  else:
+    plt.plot(Y, color=color)
 
-from mpltools import style
-print style.available
-style.use('mystyle')
+color_cycle = mpl.rcParams['axes.color_cycle']
 
 plt.subplot(311)
 plot_fftsum(repIndices[1:4])
 plt.subplot(312)
 middle = len(repIndices) / 2
-plot_fftsum(repIndices[middle-2 : middle+2])
+plot_fftsum(repIndices[middle-2 : middle+2], color_cycle[1])
 plt.ylabel("Intensity (mV)")
 plt.subplot(313)
-plot_fftsum(repIndices[-4:-1])
+plot_fftsum(repIndices[-4:-1], color_cycle[2])
 
 plt.xlabel("Frequency (Hz)")
 
 plt.savefig(plot_basename + "-3-freq.pdf", format='pdf')
 
-plt.show()
+#plt.show()
+plt.clf()
 
 plot_fftsum(repIndices[1:4])
 middle = len(repIndices) / 2
@@ -96,4 +104,4 @@ plt.ylabel("Intensity (mV)")
 
 plt.savefig(plot_basename + "-3-ampl.pdf", format='pdf')
 
-plt.show()
+#plt.show()
